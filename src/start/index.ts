@@ -1,27 +1,15 @@
 import express from 'express';
 import { Client } from 'pg';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
+import { syncMiddleware } from './middleware';
 import routes from './routes';
 import { isValidRestMethod, isValidRestPath } from '../app/validators/kernel.validators';
 import type { Route, apiMethods } from '../types/core_types/api.types';
 require('dotenv').config();
 
-const app = express();
+export const app = express();
+syncMiddleware(app)
+
 const port = process.env.PORT || 3000;
-
-
-const corsOptions = {
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: true,
-    optionsSuccessStatus: 204
-}
-app.use(cors(corsOptions));
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json());
-app.use(cookieParser());
 
 const client = new Client({
     user: process.env.DB_USER,
@@ -31,6 +19,7 @@ const client = new Client({
     database: process.env.DB_NAME,
 });
 
+// Регистрация маршрутов
 routes.forEach(({ path, method, handler }: Route) => {
     const availableRestMethods = ['get', 'post', 'put', 'delete', 'patch'];
     // Блок проверок на ошибки
