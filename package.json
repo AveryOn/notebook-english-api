@@ -8,7 +8,8 @@
     "start": "node dist/server.js",
     "dev": "ts-node src/index.ts",
     "watch": "nodemon",
-    "migration": "node ./src/migrations/core.js"
+    "migration": "node ./src/database/migrations/core.js",
+    "migration-ts": "rm -rf ./src/database/migrations/index.js && tsc --allowJs --outDir ./src/database/migrations/run ./src/database/migrations/index.ts && node ./src/database/migrations/run"
   },
   "keywords": [],
   "author": "",

@@ -1,23 +1,18 @@
 import express from 'express';
-import { Client } from 'pg';
 import { syncMiddleware } from './middleware';
 import routes from './routes';
 import { isValidRestMethod, isValidRestPath } from '../app/validators/kernel.validators';
 import type { Route, apiMethods } from '../types/core_types/api.types';
 require('dotenv').config();
+import '../database/index';
+import { migrationsRun } from '../database/migrations';
+
+// migrationsRun();
 
 export const app = express();
 syncMiddleware(app)
 
 const port = process.env.PORT || 3000;
-
-const client = new Client({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT ? +process.env.DB_PORT : 5432,
-    database: process.env.DB_NAME,
-});
 
 // Регистрация маршрутов
 routes.forEach(({ path, method, handler }: Route) => {
@@ -35,6 +30,7 @@ routes.forEach(({ path, method, handler }: Route) => {
             console.error(`[${method.toUpperCase()}] => ${path} - ERROR => `, err);
         }
     });
+    
 });
 
 app.listen(port, () => {
