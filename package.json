@@ -17,6 +17,7 @@
   "description": "",
   "dependencies": {
     "@types/pg": "^8.11.10",
+    "@vinejs/vine": "^2.1.0",
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

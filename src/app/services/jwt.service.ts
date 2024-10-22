@@ -19,18 +19,28 @@ Middleware для защиты маршрутов:
     Используйте информацию о роли, чтобы управлять доступом к защищенным маршрутам.
 
 */
-
 import jwt from 'jsonwebtoken';
 
 
+// Создание jwt токена
 export async function generateJwtToken(payload: any) {
     return new Promise((resolve, reject) => {
         try {
             const res = jwt.sign(payload, 'secret', { expiresIn: 604800, algorithm: 'HS256' });
-            console.log(res);
-            
+            resolve(res);
         } catch (err) {
             reject(err)
         }
-    })
+    });
+}
+
+// Верификация токена
+export async function verifyJwtToken(token: string, secret: string, ) {
+    return new Promise((resolve, reject) => {
+        try {
+            resolve(jwt.verify(token, secret))
+        } catch (err) {
+            reject(err);
+        }
+    });
 }

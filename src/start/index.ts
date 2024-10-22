@@ -5,10 +5,8 @@ import { isValidRestMethod, isValidRestPath } from '../app/validators/kernel.val
 import type { Route, apiMethods } from '../types/core_types/api.types';
 require('dotenv').config();
 import '../database/index';
-import { migrationsRun } from '../database/migrations';
-import { generateJwtToken } from '../app/services/jwt.service';
 
-generateJwtToken({ data: 'hello world' })
+// import { migrationsRun } from '../database/migrations';
 // migrationsRun();
 
 export const app = express();
